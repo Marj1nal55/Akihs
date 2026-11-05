@@ -1,0 +1,883 @@
+```html
+<!DOCTYPE html>
+<html lang="tr" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toplumsal Hafıza & Dijital Hikaye Anlatımı | TÜBİTAK 2204</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        slate: {
+                            850: '#111827',
+                            900: '#0f172a',
+                            950: '#020617'
+                        },
+                        amber: {
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                        },
+                        cyan: {
+                            400: '#22d3ee',
+                            500: '#06b6d4',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0b0f19;
+            color: #f3f4f6;
+        }
+        /* Glassmorphism Styles */
+        .glass-card {
+            background: rgba(30, 41, 59, 0.5);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-card-hover:hover {
+            background: rgba(30, 41, 59, 0.8);
+            border-color: rgba(34, 211, 238, 0.3);
+            box-shadow: 0 10px 30px -10px rgba(6, 182, 212, 0.15);
+        }
+        .glass-nav {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        /* Custom Glowing Accents */
+        .glow-text-cyan {
+            text-shadow: 0 0 20px rgba(34, 211, 238, 0.4);
+        }
+        .glow-text-amber {
+            text-shadow: 0 0 20px rgba(251, 191, 36, 0.4);
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0b0f19;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #334155;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-cyan-500 selection:text-slate-900">
+
+    <!-- NAVIGATION HEADER -->
+    <header class="sticky top-0 z-40 glass-nav">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex items-center gap-3">
+                    <div class="bg-gradient-to-br from-cyan-500 to-amber-500 p-2.5 rounded-xl text-slate-950 font-black text-xl shadow-lg shadow-cyan-500/20">
+                        <i class="fa-solid fa-box-archive"></i>
+                    </div>
+                    <div>
+                        <span class="text-xs font-bold tracking-widest text-cyan-400 uppercase block">TÜBİTAK 2204 Projesi</span>
+                        <h1 class="text-lg font-bold text-white leading-none">Toplumsal Hafıza Arşivi</h1>
+                    </div>
+                </div>
+
+                <!-- Navigation Links -->
+                <nav class="hidden md:flex space-x-1 lg:space-x-4">
+                    <a href="#proje-hakkinda" class="px-3 py-2 rounded-lg text-sm font-medium text-slate-300 hover:text-cyan-400 hover:bg-slate-800/50 transition-all">Proje Hakkında</a>
+                    <a href="#arsiv" class="px-3 py-2 rounded-lg text-sm font-medium text-slate-300 hover:text-cyan-400 hover:bg-slate-800/50 transition-all">Meslekler Arşivi</a>
+                    <a href="#hikaye-anlatimi" class="px-3 py-2 rounded-lg text-sm font-medium text-slate-300 hover:text-cyan-400 hover:bg-slate-800/50 transition-all">Dijital Anlatı</a>
+                    <a href="#harita" class="px-3 py-2 rounded-lg text-sm font-medium text-slate-300 hover:text-cyan-400 hover:bg-slate-800/50 transition-all">Hafıza Haritası</a>
+                    <a href="#katki-yap" class="px-3 py-2 rounded-lg text-sm font-medium text-amber-400 bg-amber-400/10 hover:bg-amber-400/20 border border-amber-400/30 transition-all"><i class="fa-solid fa-plus-circle mr-1.5"></i>Meslek Ekle</a>
+                </nav>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-slate-300 hover:text-white focus:outline-none p-2">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden border-b border-slate-800 bg-slate-900/95 px-4 pt-2 pb-4 space-y-2">
+            <a href="#proje-hakkinda" class="block px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:bg-slate-800">Proje Hakkında</a>
+            <a href="#arsiv" class="block px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:bg-slate-800">Meslekler Arşivi</a>
+            <a href="#hikaye-anlatimi" class="block px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:bg-slate-800">Dijital Anlatı</a>
+            <a href="#harita" class="block px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:bg-slate-800">Hafıza Haritası</a>
+            <a href="#katki-yap" class="block px-3 py-2 rounded-md text-base font-medium text-amber-400 bg-amber-400/10">Meslek Ekle</a>
+        </div>
+    </header>
+
+    <main class="flex-grow">
+        <!-- HERO BANNER SECTION -->
+        <section class="relative py-16 lg:py-24 overflow-hidden border-b border-slate-800/80">
+            <!-- Background Glow Effects -->
+            <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-cyan-500/10 blur-[120px] rounded-full pointer-events-none"></div>
+            <div class="absolute bottom-10 right-10 w-[400px] h-[200px] bg-amber-500/10 blur-[100px] rounded-full pointer-events-none"></div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="grid lg:grid-cols-12 gap-12 items-center">
+                    
+                    <div class="lg:col-span-7 space-y-6 text-left">
+                        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-800/90 border border-slate-700 text-xs font-semibold text-cyan-400">
+                            <span class="flex h-2 w-2 rounded-full bg-cyan-400 animate-ping"></span>
+                            TÜBİTAK 2204 Lise Öğrencileri Araştırma Projeleri
+                        </div>
+                        
+                        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white leading-tight">
+                            Toplumsal Hafıza'nın Dijital Hikaye Anlatımı ile <span class="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-teal-300 to-amber-400 glow-text-cyan">Unutulmaya Yüz Tutmuş Yerel Mesleklerin Arşivlenmesi</span>
+                        </h1>
+
+                        <p class="text-slate-300 text-base sm:text-lg leading-relaxed font-light">
+                            Sanayileşme ve dijitalleşme ile yok olma tehlikesi altındaki geleneksel zanaatları, sözlü tarih ve multimedya teknolojileriyle dijital bir hafıza havuzunda bir araya getiriyoruz.
+                        </p>
+
+                        <!-- Project Authors Badges -->
+                        <div class="pt-4 flex flex-wrap gap-4 items-center">
+                            <div class="glass-card px-4 py-3 rounded-xl flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center font-bold">IT</div>
+                                <div>
+                                    <span class="text-xs text-slate-400 block">Araştırmacı Öğrenci</span>
+                                    <span class="text-sm font-semibold text-white">İhsan Tufanoğlu <span class="text-xs font-normal text-cyan-400 ml-1">(9-E)</span></span>
+                                </div>
+                            </div>
+                            <div class="glass-card px-4 py-3 rounded-xl flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold">AE</div>
+                                <div>
+                                    <span class="text-xs text-slate-400 block">Araştırmacı Öğrenci</span>
+                                    <span class="text-sm font-semibold text-white">Akif Emre Ekici <span class="text-xs font-normal text-amber-400 ml-1">(9-E)</span></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CTA Buttons -->
+                        <div class="pt-2 flex flex-wrap gap-4">
+                            <a href="#arsiv" class="px-6 py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold shadow-lg shadow-cyan-500/25 transition-all flex items-center gap-2">
+                                <i class="fa-solid fa-compass"></i> Arşivi Keşfet
+                            </a>
+                            <a href="#proje-hakkinda" class="px-6 py-3.5 rounded-xl glass-card hover:bg-slate-800 text-white font-semibold border border-slate-700 transition-all flex items-center gap-2">
+                                <i class="fa-solid fa-book-open"></i> Proje Detayları
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Hero Visual / Stat Grid -->
+                    <div class="lg:col-span-5 grid grid-cols-2 gap-4">
+                        <div class="glass-card p-6 rounded-2xl border border-slate-700/50 flex flex-col justify-between h-44">
+                            <div class="text-cyan-400 text-2xl"><i class="fa-solid fa-hammer"></i></div>
+                            <div>
+                                <span class="text-3xl font-extrabold text-white block" id="stat-craft-count">6+</span>
+                                <span class="text-xs text-slate-400 font-medium">Kayıtlı Yerel Meslek</span>
+                            </div>
+                        </div>
+                        <div class="glass-card p-6 rounded-2xl border border-slate-700/50 flex flex-col justify-between h-44 mt-6">
+                            <div class="text-amber-400 text-2xl"><i class="fa-solid fa-microphone-lines"></i></div>
+                            <div>
+                                <span class="text-3xl font-extrabold text-white block">12</span>
+                                <span class="text-xs text-slate-400 font-medium">Sözlü Tarih Kaydı</span>
+                            </div>
+                        </div>
+                        <div class="glass-card p-6 rounded-2xl border border-slate-700/50 flex flex-col justify-between h-44 -mt-6">
+                            <div class="text-emerald-400 text-2xl"><i class="fa-solid fa-map-location-dot"></i></div>
+                            <div>
+                                <span class="text-3xl font-extrabold text-white block">8</span>
+                                <span class="text-xs text-slate-400 font-medium">Belgelenen Bölge</span>
+                            </div>
+                        </div>
+                        <div class="glass-card p-6 rounded-2xl border border-slate-700/50 flex flex-col justify-between h-44">
+                            <div class="text-purple-400 text-2xl"><i class="fa-solid fa-users-viewfinder"></i></div>
+                            <div>
+                                <span class="text-3xl font-extrabold text-white block">100%</span>
+                                <span class="text-xs text-slate-400 font-medium">Açık Dijital Arşiv</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- TÜBİTAK PROJE METODOLOJİSİ VE AMACI -->
+        <section id="proje-hakkinda" class="py-16 bg-slate-900/40 border-b border-slate-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-12">
+                    <h2 class="text-xs font-bold tracking-widest text-cyan-400 uppercase">TÜBİTAK 2204 Proje Özeti</h2>
+                    <h3 class="text-2xl sm:text-3xl font-bold text-white mt-1">Araştırma Metodolojisi & Amaç</h3>
+                    <div class="h-1 w-20 bg-gradient-to-r from-cyan-500 to-amber-500 mx-auto mt-3 rounded-full"></div>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- Amaç -->
+                    <div class="glass-card p-6 rounded-2xl border border-slate-800 space-y-3">
+                        <div class="w-12 h-12 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center text-xl font-bold mb-4">
+                            <i class="fa-solid fa-bullseye"></i>
+                        </div>
+                        <h4 class="text-lg font-bold text-white">Projenin Amacı</h4>
+                        <p class="text-sm text-slate-300 leading-relaxed">
+                            Endüstri 4.0 ve seri üretimle unutulmaya yüz tutmuş yerel zanaatları, dijital hikaye anlatımı (digital storytelling) teknikleriyle kaydederek gelecek kuşaklara aktarmak ve kültürel toplumsal hafızayı sürdürülebilir kılmak.
+                        </p>
+                    </div>
+
+                    <!-- Yöntem -->
+                    <div class="glass-card p-6 rounded-2xl border border-slate-800 space-y-3">
+                        <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-xl font-bold mb-4">
+                            <i class="fa-solid fa-diagram-project"></i>
+                        </div>
+                        <h4 class="text-lg font-bold text-white">Yöntem ve Saha Çalışması</h4>
+                        <p class="text-sm text-slate-300 leading-relaxed">
+                            Nitel araştırma yöntemlerinden "Sözlü Tarih" (Oral History) ve derinlemesine mülakat teknikleri uygulanmıştır. Yaşayan son ustalarla ses/video kayıtları yapılmış, zanaat prosesleri ve terminolojileri veritabanına aktarılmıştır.
+                        </p>
+                    </div>
+
+                    <!-- Beklenen Sonuçlar -->
+                    <div class="glass-card p-6 rounded-2xl border border-slate-800 space-y-3">
+                        <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xl font-bold mb-4">
+                            <i class="fa-solid fa-award"></i>
+                        </div>
+                        <h4 class="text-lg font-bold text-white">Beklenen Çıktılar</h4>
+                        <p class="text-sm text-slate-300 leading-relaxed">
+                            Toplumsal farkındalığı artıracak açık erişimli web platformu, dijital sesli rehber kütüphanesi ve halkın katılımına açık (crowdsourced) geliştirilebilir dinamik somut olmayan kültürel miras arşivi.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DİJİTAL MESLEKLER ARŞİVİ (MAIN INTERACTIVE ARCHIVE) -->
+        <section id="arsiv" class="py-16">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <!-- Section Header & Filter Controls -->
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
+                    <div>
+                        <h2 class="text-xs font-bold tracking-widest text-cyan-400 uppercase">Somut Olmayan Kültürel Miras</h2>
+                        <h3 class="text-3xl font-extrabold text-white mt-1">Geleneksel Meslekler Arşivi</h3>
+                        <p class="text-slate-400 text-sm mt-1">İncelemek ve ses kaydını dinlemek istediğiniz mesleğe tıklayın.</p>
+                    </div>
+
+                    <!-- Search and Filter Tabs -->
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <!-- Search Bar -->
+                        <div class="relative">
+                            <input type="text" id="search-input" placeholder="Meslek veya usta ara..." class="w-full sm:w-64 bg-slate-800/80 border border-slate-700 text-sm text-white px-4 py-2.5 pl-10 rounded-xl focus:outline-none focus:border-cyan-400 transition-all">
+                            <i class="fa-solid fa-search absolute left-3.5 top-3 text-slate-400 text-sm"></i>
+                        </div>
+                        <!-- Filter Category Tabs -->
+                        <div class="flex p-1 bg-slate-800/80 rounded-xl border border-slate-700/80 overflow-x-auto" id="filter-tabs">
+                            <button data-category="all" class="filter-btn active px-3 py-1.5 rounded-lg text-xs font-semibold bg-cyan-500 text-slate-950 transition-all">Tümü</button>
+                            <button data-category="El Sanatları" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:text-white transition-all">El Sanatları</button>
+                            <button data-category="Geleneksel Üretim" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:text-white transition-all">Üretim</button>
+                            <button data-category="Onarım & Zanaat" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:text-white transition-all">Onarım</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cards Grid Container -->
+                <div id="crafts-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Cards will be populated dynamically by JS -->
+                </div>
+
+                <!-- Empty State Message -->
+                <div id="empty-state" class="hidden text-center py-16 glass-card rounded-2xl">
+                    <i class="fa-solid fa-folder-open text-4xl text-slate-600 mb-3 block"></i>
+                    <p class="text-slate-400 text-lg">Aramanızla eşleşen bir yerel meslek bulunamadı.</p>
+                    <button id="reset-search-btn" class="mt-4 px-4 py-2 bg-slate-800 text-cyan-400 text-xs font-semibold rounded-lg hover:bg-slate-700">Filtreleri Temizle</button>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- DİJİTAL HİKAYE ANLATIMI OYNATICI (PLAYER HUB) -->
+        <section id="hikaye-anlatimi" class="py-16 bg-slate-900/60 border-t border-b border-slate-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-2xl mx-auto mb-10">
+                    <span class="text-xs font-bold tracking-widest text-amber-400 uppercase">Sözlü Tarih & Multimedya</span>
+                    <h2 class="text-3xl font-extrabold text-white mt-1">Dijital Hikaye Anlatım Modülü</h2>
+                    <p class="text-slate-400 text-sm mt-2">Son ustaların kendi sesinden mesleklerinin incelikleri, anıları ve yaşama dair anlatıları.</p>
+                </div>
+
+                <!-- Interactive Audio/Story Player Card -->
+                <div class="glass-card rounded-3xl border border-slate-700/60 p-6 lg:p-8 grid lg:grid-cols-12 gap-8 items-center shadow-2xl">
+                    
+                    <!-- Left: Master Image & Audio Control -->
+                    <div class="lg:col-span-5 space-y-4">
+                        <div class="relative rounded-2xl overflow-hidden aspect-video sm:aspect-square bg-slate-800 border border-slate-700">
+                            <img id="player-img" src="https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=800&q=80" alt="Usta Görseli" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent"></div>
+                            
+                            <!-- Master Tag -->
+                            <div class="absolute bottom-4 left-4 right-4">
+                                <span id="player-badge" class="px-2.5 py-1 rounded-md bg-cyan-500/90 text-slate-950 font-bold text-xs uppercase tracking-wider inline-block mb-1">Geleneksel Bakırcılık</span>
+                                <h3 id="player-master" class="text-xl font-extrabold text-white">Ahmet Bakırcı Usta</h3>
+                                <p id="player-location" class="text-xs text-slate-300"><i class="fa-solid fa-location-dot text-amber-400 mr-1"></i> Gaziantep Bakırcılar Çarşısı</p>
+                            </div>
+                        </div>
+
+                        <!-- Audio Custom Player Bar -->
+                        <div class="bg-slate-800/90 p-4 rounded-xl border border-slate-700 space-y-3">
+                            <div class="flex items-center justify-between text-xs text-slate-400">
+                                <span><i class="fa-solid fa-headphones mr-1 text-cyan-400"></i> Ses Kaydı Transcript</span>
+                                <span id="audio-timer">01:45 / 03:20</span>
+                            </div>
+
+                            <!-- Progress Bar Simulation -->
+                            <div class="w-full bg-slate-700 h-2 rounded-full overflow-hidden cursor-pointer" id="audio-progress-bar">
+                                <div id="audio-progress" class="bg-gradient-to-r from-cyan-400 to-amber-400 h-full w-1/3 rounded-full"></div>
+                            </div>
+
+                            <!-- Player Buttons -->
+                            <div class="flex items-center justify-center gap-6 pt-1">
+                                <button class="text-slate-400 hover:text-white transition-colors" onclick="alert('Önceki ses kaydı')"><i class="fa-solid fa-backward-step text-lg"></i></button>
+                                <button id="play-pause-btn" class="w-12 h-12 rounded-full bg-cyan-400 text-slate-950 flex items-center justify-center text-lg hover:scale-105 transition-transform shadow-lg shadow-cyan-400/30">
+                                    <i class="fa-solid fa-play ml-0.5"></i>
+                                </button>
+                                <button class="text-slate-400 hover:text-white transition-colors" onclick="alert('Sonraki ses kaydı')"><i class="fa-solid fa-forward-step text-lg"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Story Narrative & Quote -->
+                    <div class="lg:col-span-7 space-y-6">
+                        <div class="space-y-2">
+                            <span class="text-xs font-bold text-amber-400 uppercase tracking-widest"><i class="fa-solid fa-quote-left mr-1"></i> Ustanın Anlatısı</span>
+                            <h3 id="player-title" class="text-2xl font-bold text-white leading-snug">"Bakıra vurulan her çekiç darbesi, ustanın kalbinden geçen bir ritimdir."</h3>
+                        </div>
+
+                        <p id="player-story" class="text-slate-300 text-sm sm:text-base leading-relaxed italic border-l-2 border-cyan-400 pl-4 py-1">
+                            "12 yaşımda çırak olarak girdim bu dükkana. O zamanlar bu arasta çekiç seslerinden inlerdi. Şimdilerde teknoloji çıktı, bakırın yerini plastik ve alüminyum aldı. Ama hiçbir seri üretim ürün, elde işlenmiş bakırın sıcaklığını tutamaz."
+                        </p>
+
+                        <!-- Highlight Tags -->
+                        <div class="pt-2 border-t border-slate-800">
+                            <span class="text-xs font-medium text-slate-400 block mb-2">Dijital Arşiv Temaları:</span>
+                            <div class="flex flex-wrap gap-2" id="player-tags">
+                                <span class="px-2.5 py-1 rounded-lg bg-slate-800 border border-slate-700 text-xs text-slate-300">#ÇıraklıkKültürü</span>
+                                <span class="px-2.5 py-1 rounded-lg bg-slate-800 border border-slate-700 text-xs text-slate-300">#ElEmeği</span>
+                                <span class="px-2.5 py-1 rounded-lg bg-slate-800 border border-slate-700 text-xs text-slate-300">#EndüstrileşmeTehdidi</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ETKİLEŞİMLİ HAFIZA HARİTASI (GEOGRAPHICAL MEMORY) -->
+        <section id="harita" class="py-16">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-2xl mx-auto mb-10">
+                    <span class="text-xs font-bold tracking-widest text-cyan-400 uppercase">Coğrafi Dağılım</span>
+                    <h2 class="text-3xl font-extrabold text-white mt-1">Türkiye Zanaat Hafıza Haritası</h2>
+                    <p class="text-slate-400 text-sm mt-2">İncelenen mesleklerin bölgesel olarak aktiflik durumu ve usta yoğunlukları.</p>
+                </div>
+
+                <div class="glass-card p-6 rounded-3xl border border-slate-700/60 relative overflow-hidden">
+                    <div class="grid md:grid-cols-3 gap-6 mb-6">
+                        <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800">
+                            <span class="text-xs text-slate-400 block">En Çok Yoğunlaşan Bölge</span>
+                            <span class="text-lg font-bold text-cyan-400">Güneydoğu Anadolu & Ege</span>
+                        </div>
+                        <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800">
+                            <span class="text-xs text-slate-400 block">Kritik Risk Altındaki Meslekler</span>
+                            <span class="text-lg font-bold text-amber-400">Semercilik, Keçecilik</span>
+                        </div>
+                        <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800">
+                            <span class="text-xs text-slate-400 block">Kayıt Alınan İl Sayısı</span>
+                            <span class="text-lg font-bold text-emerald-400">6 İl (Saha Araştırması)</span>
+                        </div>
+                    </div>
+
+                    <!-- Visual Interactive Map Grid Representation -->
+                    <div class="relative w-full bg-slate-950 rounded-2xl border border-slate-800 p-6 min-h-[300px] flex flex-col justify-between">
+                        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#22d3ee_1px,transparent_1px)] [background-size:16px_16px]"></div>
+
+                        <div class="relative z-10 flex justify-between items-center text-xs text-slate-400 border-b border-slate-800 pb-3">
+                            <span><i class="fa-solid fa-map mr-1 text-cyan-400"></i> Bölgesel Arşiv Odakları</span>
+                            <span class="flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse inline-block"></span> Kritik Tehlikede
+                            </span>
+                        </div>
+
+                        <!-- Map Pins Grid Simulation -->
+                        <div class="relative z-10 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 py-8" id="map-pins-container">
+                            <!-- JS map pins populate here -->
+                        </div>
+
+                        <div class="relative z-10 text-center text-xs text-slate-500 border-t border-slate-800 pt-3">
+                            * TÜBİTAK 2204 projesi kapsamında saha çalışması yapılan iller vurgulanmıştır.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MESLEK / HİKAYE EKLE (GELİŞTİRİLEBİLİR TOPLULUK KATKISI FORMU) -->
+        <section id="katki-yap" class="py-16 bg-slate-900/40 border-t border-slate-800">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-10">
+                    <span class="text-xs font-bold tracking-widest text-amber-400 uppercase">Açık Katkı Modülü</span>
+                    <h2 class="text-3xl font-extrabold text-white mt-1">Yerel Meslek & Usta Bildir</h2>
+                    <p class="text-slate-400 text-sm mt-2">Çevrenizde unutulmaya yüz tutmuş bir zanaat veya son usta mı var? Arşivi genişletmek için katkıda bulunun.</p>
+                </div>
+
+                <div class="glass-card p-8 rounded-3xl border border-slate-700/60 shadow-2xl">
+                    <form id="add-craft-form" class="space-y-6">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <!-- Meslek Adı -->
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Meslek Adı *</label>
+                                <input type="text" id="form-title" required placeholder="Örn: Bastonculuk, Yorgancılık" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-cyan-400 transition-colors">
+                            </div>
+
+                            <!-- Kategori -->
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Kategori *</label>
+                                <select id="form-category" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-cyan-400 transition-colors">
+                                    <option value="El Sanatları">El Sanatları</option>
+                                    <option value="Geleneksel Üretim">Geleneksel Üretim</option>
+                                    <option value="Onarım & Zanaat">Onarım & Zanaat</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <!-- Usta Adı -->
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Son Ustanın Adı / Lakabı</label>
+                                <input type="text" id="form-master" placeholder="Örn: Ali Usta" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-cyan-400 transition-colors">
+                            </div>
+
+                            <!-- Şehir / Konum -->
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Şehir / Bölge *</label>
+                                <input type="text" id="form-location" required placeholder="Örn: Kastamonu / Devrek" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-cyan-400 transition-colors">
+                            </div>
+                        </div>
+
+                        <!-- Kısa Hikaye / Bilgi -->
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Mesleğin Geçmişi & Ustanın Anlatısı *</label>
+                            <textarea id="form-description" rows="4" required placeholder="Meslek hakkında bildiklerinizi, mevcut durumunu veya usta ile olan anınızı detaylandırın..." class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-cyan-400 transition-colors"></textarea>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="w-full py-4 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold text-base shadow-lg shadow-amber-500/20 transition-all flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-paper-plane"></i> Arşive Ekle (Katkıda Bulun)
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- DETAY MODAL (CLICKED CRAFT DETAILS) -->
+    <div id="craft-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
+        <div class="glass-card w-full max-w-2xl rounded-3xl border border-slate-700 overflow-hidden shadow-2xl max-h-[90vh] flex flex-col">
+            <!-- Modal Header Image -->
+            <div class="relative h-48 bg-slate-800">
+                <img id="modal-img" src="" alt="" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent"></div>
+                <button id="close-modal-btn" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-slate-900/80 text-white flex items-center justify-center hover:bg-slate-800 transition-colors">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <div class="absolute bottom-4 left-6">
+                    <span id="modal-category" class="px-2.5 py-0.5 rounded bg-cyan-500/90 text-slate-950 text-xs font-bold uppercase tracking-wider"></span>
+                    <h3 id="modal-title" class="text-2xl font-extrabold text-white mt-1"></h3>
+                </div>
+            </div>
+
+            <!-- Modal Content Body -->
+            <div class="p-6 space-y-4 overflow-y-auto flex-grow text-slate-300 text-sm">
+                <div class="flex items-center gap-4 text-xs text-slate-400 border-b border-slate-800 pb-3">
+                    <span><i class="fa-solid fa-user text-cyan-400 mr-1"></i> Usta: <strong id="modal-master" class="text-white"></strong></span>
+                    <span><i class="fa-solid fa-location-dot text-amber-400 mr-1"></i> Konum: <strong id="modal-location" class="text-white"></strong></span>
+                    <span><i class="fa-solid fa-shield-heart text-red-400 mr-1"></i> Durum: <strong id="modal-status" class="text-white"></strong></span>
+                </div>
+
+                <div>
+                    <h4 class="text-xs font-bold uppercase text-cyan-400 tracking-wider mb-1">Tarihsel Süreç & Hakkında</h4>
+                    <p id="modal-description" class="leading-relaxed"></p>
+                </div>
+
+                <div class="bg-slate-950 p-4 rounded-xl border border-slate-800">
+                    <h4 class="text-xs font-bold uppercase text-amber-400 tracking-wider mb-1"><i class="fa-solid fa-quote-left mr-1"></i> Usta Alıntısı</h4>
+                    <p id="modal-quote" class="italic text-slate-200"></p>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="p-4 bg-slate-900 border-t border-slate-800 flex justify-end">
+                <button id="modal-close-bottom" class="px-5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-medium text-xs">Kapat</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- NOTIFICATION TOAST -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 hidden bg-emerald-500 text-slate-950 px-5 py-3 rounded-xl font-bold shadow-xl flex items-center gap-2">
+        <i class="fa-solid fa-check-circle"></i> <span id="toast-msg">İşlem başarılı!</span>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-950 border-t border-slate-800/80 py-8 text-xs text-slate-400">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div>
+                <p class="font-semibold text-slate-300">TÜBİTAK 2204 Lise Öğrencileri Araştırma Projesi</p>
+                <p class="text-slate-400 mt-0.5">Öğrenciler: İhsan Tufanoğlu & Akif Emre Ekici (9-E)</p>
+            </div>
+            <div class="text-center sm:text-right">
+                <p>© 2026 Toplumsal Hafıza ve Dijital Hikaye Anlatımı Platformu</p>
+                <p class="text-slate-400 mt-0.5">Geliştirilebilir Koyu Tema Açık Dijital Arşiv</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // Initial Dataset for Vanishing Trades (TÜBİTAK Project Data)
+        const initialCrafts = [
+            {
+                id: 1,
+                title: "Bakırcılık",
+                category: "Geleneksel Üretim",
+                master: "Ahmet Bakırcı Usta",
+                location: "Gaziantep",
+                status: "Kritik Derecede Azalıyor",
+                image: "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=800&q=80",
+                description: "Bakırcılık, bakır külçelerin örs üzerinde çekiçle dövülerek mutfak eşyası ve süs eşyalarına dönüştürülmesidir. Çekiç seslerinin ritmi geleneksel arastaların simgesidir.",
+                quote: "Bakıra vurulan her çekiç darbesi, ustanın kalbinden geçen bir ritimdir.",
+                audio: "#",
+                tags: ["#ÇıraklıkKültürü", "#ElEmeği", "#Gaziantep"]
+            },
+            {
+                id: 2,
+                title: "Semercilik",
+                category: "Onarım & Zanaat",
+                master: "Mustafa Çelik Usta",
+                location: "Balıkesir / Edremit",
+                status: "Yok Olmak Üzere (Son 3 Usta)",
+                image: "https://images.unsplash.com/photo-1590736969955-71cc94901144?auto=format&fit=crop&w=800&q=80",
+                description: "Binek ve yük hayvanlarının sırtına konan semerin imalatıdır. Deri, çuval, kamış ve keçe bir arada kullanılarak tamamen elde dikilir.",
+                quote: "Motorlu araçlar köylere girdi, bizim atlar da semerler de tarih oldu.",
+                audio: "#",
+                tags: ["#GelenekselZanaat", "#KöyKültürü"]
+            },
+            {
+                id: 3,
+                title: "Kalaycılık",
+                category: "Onarım & Zanaat",
+                master: "Hasan Kalaycı Usta",
+                location: "Kastamonu",
+                status: "Terk Edilme Riski Yüksek",
+                image: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80",
+                description: "Bakır kapların zehirleme yapmaması için eritilmiş erimiş nişadır ve kalay ile kaplanması işlemidir. Ocak ateşi ve körük zanaatın kalbidir.",
+                quote: "Kalay kapın şifasıdır; teflon çıktı, eski lezzet de bitti sağlık da.",
+                audio: "#",
+                tags: ["#BakırKalay", "#SağlıkKültürü"]
+            },
+            {
+                id: 4,
+                title: "Keçecilik",
+                category: "El Sanatları",
+                master: "Süleyman Keçeci",
+                location: "Afyonkarahisar",
+                status: "Nadir İmalat",
+                image: "https://images.unsplash.com/photo-1606744888344-49423b741586?auto=format&fit=crop&w=800&q=80",
+                description: "Koyun yününün sıcak su ve sabunla pişirilip dövülerek liflerin birbirine kenetlenmesi sanatıdır. Dünyanın en eski dokuma türlerindendir.",
+                quote: "Yün canlıdır, ona sevgiyle basmazsan keçe tutmaz.",
+                audio: "#",
+                tags: ["#DoğalDokuma", "#Afyon"]
+            },
+            {
+                id: 5,
+                title: "Sepetçilik",
+                category: "El Sanatları",
+                master: "Emine Teyze",
+                location: "Trabzon / Sürmene",
+                status: "Yerel Düzeyde Devam Ediyor",
+                image: "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=800&q=80",
+                description: "Fındık dalları, kestane veya kargı çubuklarının soyularak özenle örülmesiyle yapılan taşıma kaplarıdır. Karadeniz çay ve fındık toplama kültürünün parçasıdır.",
+                quote: "Fındık çıbığını eğmeyisini bilmeyen sepet öremez.",
+                audio: "#",
+                tags: ["#Karadeniz", "#DoğalMalzeme"]
+            },
+            {
+                id: 6,
+                title: "Nalbantlık",
+                category: "Onarım & Zanaat",
+                master: "Mehmet Nalbant Usta",
+                location: "Eskişehir",
+                status: "Kritik Tehlikede",
+                image: "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=800&q=80",
+                description: "Yük ve binek hayvanlarının tırnaklarına koruyucu demir nal çakılması zanaatıdır. Hem demircilik hem hayvan anatomisi bilgisi gerektirir.",
+                quote: "Nal çakmak sadece demir dövmek değildir, hayvanın dilinden anlamaktır.",
+                audio: "#",
+                tags: ["#AtKültürü", "#Demircilik"]
+            }
+        ];
+
+        // Map Pins Data
+        const mapData = [
+            { city: "Gaziantep", craft: "Bakırcılık", count: "12 Usta", status: "Aktif Tehlike" },
+            { city: "Balıkesir", craft: "Semercilik", count: "3 Usta", status: "Kritik Risk" },
+            { city: "Kastamonu", craft: "Kalaycılık", count: "5 Usta", status: "Kritik Risk" },
+            { city: "Afyon", craft: "Keçecilik", count: "7 Usta", status: "Orta Risk" },
+            { city: "Trabzon", craft: "Sepetçilik", count: "15 Usta", status: "Düşük Risk" },
+            { city: "Eskişehir", craft: "Nalbantlık", count: "2 Usta", status: "Kritik Risk" }
+        ];
+
+        // Global State
+        let craftsData = [];
+        let currentFilter = 'all';
+        let searchQuery = '';
+
+        // DOM Elements
+        const craftsGrid = document.getElementById('crafts-grid');
+        const searchInput = document.getElementById('search-input');
+        const filterTabs = document.getElementById('filter-tabs');
+        const emptyState = document.getElementById('empty-state');
+        const resetSearchBtn = document.getElementById('reset-search-btn');
+        const modal = document.getElementById('craft-modal');
+        const addCraftForm = document.getElementById('add-craft-form');
+        const toast = document.getElementById('toast');
+
+        // Audio Player Elements
+        const playPauseBtn = document.getElementById('play-pause-btn');
+        let isPlaying = false;
+
+        // Initialize App
+        window.addEventListener('DOMContentLoaded', () => {
+            loadCrafts();
+            renderCrafts();
+            renderMapPins();
+            setupEventListeners();
+        });
+
+        // Load Data (LocalStorage fallback)
+        function loadCrafts() {
+            const saved = localStorage.getItem('tubitak_crafts');
+            if (saved) {
+                try {
+                    craftsData = JSON.parse(saved);
+                } catch(e) {
+                    craftsData = [...initialCrafts];
+                }
+            } else {
+                craftsData = [...initialCrafts];
+                localStorage.setItem('tubitak_crafts', JSON.stringify(craftsData));
+            }
+            document.getElementById('stat-craft-count').textContent = craftsData.length + "+";
+        }
+
+        // Render Crafts Grid
+        function renderCrafts() {
+            craftsGrid.innerHTML = '';
+
+            const filtered = craftsData.filter(item => {
+                const matchesCategory = currentFilter === 'all' || item.category === currentFilter;
+                const matchesSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                                      item.master.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                                      item.location.toLowerCase().includes(searchQuery.toLowerCase());
+                return matchesCategory && matchesSearch;
+            });
+
+            if (filtered.length === 0) {
+                emptyState.classList.remove('hidden');
+            } else {
+                emptyState.classList.add('hidden');
+                filtered.forEach(craft => {
+                    const card = document.createElement('div');
+                    card.className = "glass-card glass-card-hover rounded-2xl overflow-hidden border border-slate-800 transition-all duration-300 flex flex-col justify-between cursor-pointer group";
+                    card.onclick = () => openModal(craft);
+
+                    card.innerHTML = `
+                        <div>
+                            <div class="relative h-48 overflow-hidden">
+                                <img src="${craft.image}" alt="${craft.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent opacity-80"></div>
+                                <span class="absolute top-3 left-3 bg-slate-900/80 backdrop-blur-md text-cyan-400 border border-cyan-400/30 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">
+                                    ${craft.category}
+                                </span>
+                            </div>
+                            <div class="p-5 space-y-3">
+                                <div class="flex items-center justify-between">
+                                    <h3 class="text-xl font-bold text-white group-hover:text-cyan-400 transition-colors">${craft.title}</h3>
+                                    <span class="text-xs text-amber-400 font-medium"><i class="fa-solid fa-location-dot"></i> ${craft.location}</span>
+                                </div>
+                                <p class="text-xs text-slate-300 line-clamp-2 leading-relaxed">${craft.description}</p>
+                            </div>
+                        </div>
+                        <div class="p-5 pt-0 flex items-center justify-between text-xs text-slate-400 border-t border-slate-800/60 mt-3 pt-3">
+                            <span class="truncate"><i class="fa-solid fa-user-tie text-slate-400 mr-1"></i> ${craft.master}</span>
+                            <span class="text-cyan-400 font-semibold flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                                Detay <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                            </span>
+                        </div>
+                    `;
+                    craftsGrid.appendChild(card);
+                });
+            }
+        }
+
+        // Render Interactive Map Pins
+        function renderMapPins() {
+            const container = document.getElementById('map-pins-container');
+            container.innerHTML = mapData.map(pin => `
+                <div class="bg-slate-900/90 border border-slate-800 p-3 rounded-xl hover:border-cyan-400 transition-all text-center space-y-1">
+                    <span class="w-3 h-3 rounded-full bg-cyan-400 inline-block shadow-lg shadow-cyan-400/50"></span>
+                    <h5 class="text-xs font-bold text-white">${pin.city}</h5>
+                    <p class="text-[11px] text-cyan-400">${pin.craft}</p>
+                    <span class="text-[9px] text-slate-500 block">${pin.count}</span>
+                </div>
+            `).join('');
+        }
+
+        // Event Listeners setup
+        function setupEventListeners() {
+            // Search Input
+            searchInput.addEventListener('input', (e) => {
+                searchQuery = e.target.value;
+                renderCrafts();
+            });
+
+            // Category Filter Buttons
+            filterTabs.addEventListener('click', (e) => {
+                if (e.target.classList.contains('filter-btn')) {
+                    document.querySelectorAll('.filter-btn').forEach(btn => {
+                        btn.classList.remove('bg-cyan-500', 'text-slate-950');
+                        btn.classList.add('text-slate-300');
+                    });
+                    e.target.classList.add('bg-cyan-500', 'text-slate-950');
+                    e.target.classList.remove('text-slate-300');
+
+                    currentFilter = e.target.getAttribute('data-category');
+                    renderCrafts();
+                }
+            });
+
+            // Reset Search
+            resetSearchBtn.addEventListener('click', () => {
+                searchQuery = '';
+                currentFilter = 'all';
+                searchInput.value = '';
+                document.querySelectorAll('.filter-btn').forEach((btn, idx) => {
+                    if (idx === 0) {
+                        btn.classList.add('bg-cyan-500', 'text-slate-950');
+                    } else {
+                        btn.classList.remove('bg-cyan-500', 'text-slate-950');
+                    }
+                });
+                renderCrafts();
+            });
+
+            // Modal Close Buttons
+            document.getElementById('close-modal-btn').onclick = closeModal;
+            document.getElementById('modal-close-bottom').onclick = closeModal;
+            modal.onclick = (e) => {
+                if (e.target === modal) closeModal();
+            };
+
+            // Mobile Menu Toggle
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileBtn.onclick = () => {
+                mobileMenu.classList.toggle('hidden');
+            };
+
+            // Form Submission (Add Craft)
+            addCraftForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const newCraft = {
+                    id: Date.now(),
+                    title: document.getElementById('form-title').value,
+                    category: document.getElementById('form-category').value,
+                    master: document.getElementById('form-master').value || "Belirtilmedi",
+                    location: document.getElementById('form-location').value,
+                    status: "Topluluk Bildirimi",
+                    image: "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=800&q=80",
+                    description: document.getElementById('form-description').value,
+                    quote: "Yeni eklenen topluluk anlatısı.",
+                    tags: ["#ToplulukKatkısı"]
+                };
+
+                craftsData.unshift(newCraft);
+                localStorage.setItem('tubitak_crafts', JSON.stringify(craftsData));
+                document.getElementById('stat-craft-count').textContent = craftsData.length + "+";
+                
+                renderCrafts();
+                addCraftForm.reset();
+                showToast("Yeni meslek arşive başarıyla eklendi!");
+            });
+
+            // Audio Player Simulation Toggle
+            playPauseBtn.onclick = () => {
+                isPlaying = !isPlaying;
+                const icon = playPauseBtn.querySelector('i');
+                if (isPlaying) {
+                    icon.className = "fa-solid fa-pause ml-0";
+                    showToast("Ses kaydı oynatılıyor...");
+                } else {
+                    icon.className = "fa-solid fa-play ml-0.5";
+                }
+            };
+        }
+
+        // Open Detail Modal
+        function openModal(craft) {
+            document.getElementById('modal-img').src = craft.image;
+            document.getElementById('modal-title').textContent = craft.title;
+            document.getElementById('modal-category').textContent = craft.category;
+            document.getElementById('modal-master').textContent = craft.master;
+            document.getElementById('modal-location').textContent = craft.location;
+            document.getElementById('modal-status').textContent = craft.status;
+            document.getElementById('modal-description').textContent = craft.description;
+            document.getElementById('modal-quote').textContent = `"${craft.quote}"`;
+
+            // Update Audio Player Hub View with clicked item info
+            document.getElementById('player-img').src = craft.image;
+            document.getElementById('player-master').textContent = craft.master;
+            document.getElementById('player-badge').textContent = craft.title;
+            document.getElementById('player-location').innerHTML = `<i class="fa-solid fa-location-dot text-amber-400 mr-1"></i> ${craft.location}`;
+            document.getElementById('player-title').textContent = `"${craft.quote}"`;
+            document.getElementById('player-story').textContent = craft.description;
+
+            modal.classList.remove('hidden');
+        }
+
+        // Close Modal
+        function closeModal() {
+            modal.classList.add('hidden');
+        }
+
+        // Toast Message Helper
+        function showToast(msg) {
+            document.getElementById('toast-msg').textContent = msg;
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
+```
